@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="te">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Anil Updates — Job Alerts (RRB • CHSL • ICET)</title>
+  <meta name="description" content="Anil Updates - Latest job notifications, results, hall tickets and model papers in Telugu.">
+  <link rel="stylesheet" href="style1.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-header">
+      <div class="brand">
+       <div class="logo">
+  <img src="logo1.jpg.png" alt="Anil Updates Logo">
+</div>
+
+        <div>
+          <h1>Anil Updates</h1>
+          <p class="tag">Daily Job Alerts • RRB • CHSL • ICET (తెలుగు)</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="themeToggle" class="btn secondary">Dark</button>
+        <button id="adminBtn" class="btn secondary">Admin</button>
+        <button id="logoutBtn" class="btn secondary hidden">Logout</button>
+      </div>
+    </header>
+
+    <div class="topbar">
+      <div class="search">
+        <input id="searchInput" placeholder="Search job posts (RRB, CHSL, ICET)">
+        <button id="searchBtn" class="btn">Search</button>
+      </div>
+      <div class="actions">
+        <button id="openAdd" class="btn secondary hidden">Add Post</button>
+        <button id="resetBtn" class="btn secondary">Reset Sample</button>
+      </div>
+    </div>
+
+    <main class="grid">
+      <section>
+        <div class="card">
+          <div id="filters" class="filters">
+            <div class="chip active" data-cat="all">అన్నీ</div>
+            <div class="chip" data-cat="RRB">RRB</div>
+            <div class="chip" data-cat="CHSL">CHSL</div>
+            <div class="chip" data-cat="ICET">ICET</div>
+            <div class="chip" data-cat="Model Papers">Model Papers</div>
+          </div>
+
+          <div id="postsContainer" class="posts"></div>
+          <div id="emptyMsg" class="meta hidden">ఇప్పుడే ఎలాంటి పోస్ట్‌లు లేవు.</div>
+
+          <div id="loadMoreWrap" style="text-align:center;margin-top:8px" class="hidden">
+            <button id="loadMoreBtn" class="btn">Load more</button>
+          </div>
+        </div>
+
+        <div id="postView" class="card post-view hidden"></div>
+
+        <div class="card bottom-card "style="margin-top:12px">
+          <h3>Management</h3>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button id="exportBtn" class="btn secondary">Export Posts</button>
+            <input id="importFile" type="file" accept=".json" style="display:none">
+            <button id="importBtn" class="btn secondary">Import Posts</button>
+            <button id="rssBtn" class="btn secondary">Download RSS</button>
+            <button id="backupBtn" class="btn secondary">Backup (show JSON)</button>
+          </div>
+        </div>
+      </section>
+<!-- ADD/EDIT MODAL with Single + Bulk mode -->
+<div id="addModal" class="modal hidden">
+  <div class="modal-card">
+    <h3 id="modalTitle">Add Post</h3>
+
+    <!-- Mode toggle -->
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <button id="modeSingle" class="btn secondary">Single</button>
+      <button id="modeBulk" class="btn secondary">Bulk</button>
+    </div>
+
+    <!-- SINGLE form -->
+    <div id="singleForm">
+      <div class="form-row" style="margin-top:8px">
+        <input id="postTitle" placeholder="Title (e.g., RRB Notification 2025)">
+      </div>
+      <div class="form-row" style="margin-top:8px">
+        <select id="postCat">
+          <option value="RRB">RRB</option>
+          <option value="CHSL">CHSL</option>
+          <option value="ICET">ICET</option>
+          <option value="Model Papers">Model Papers</option>
+        </select>
+      </div>
+      <div class="form-row" style="margin-top:8px">
+        <textarea id="postSummary" rows="5" placeholder="Short summary / details..."></textarea>
+      </div>
+      <div class="form-row" style="margin-top:8px">
+        <input id="postImage" placeholder="Optional image URL">
+      </div>
+    </div>
+
+    <!-- BULK form (CSV or JSON) -->
+    <div id="bulkForm" class="hidden">
+      <p class="meta">Bulk add: paste multiple posts. Supported formats:</p>
+      <ul style="margin:6px 0 10px 18px">
+        <li>CSV lines: <code>title|category|summary|image(optional)</code></li>
+        <li>OR JSON array: <code>[{"title":"..","cat":"RRB","summary":"..","image":".."}, ...]</code></li>
+      </ul>
+      <textarea id="bulkInput" rows="8" placeholder="One item per line (CSV with |) or paste JSON array"></textarea>
+      <p class="meta" style="margin-top:6px">Example CSV line: <code>RRB Notification 2025|RRB|Apply link open|https://...</code></p>
+    </div>
+
+    <div class="form-actions" style="margin-top:12px">
+      <button id="cancelAdd" class="btn secondary">Cancel</button>
+      <button id="savePost" class="btn">Save</button>
+    </div>
+  </div>
+</div>
+
+      <aside class="sidebar">
+        <div class="card subscribe-card">
+          <h3>Subscribe</h3>
+          <input id="emailSub" placeholder="Email">
+          <button id="subBtn" class="btn" style="margin-top:8px">Subscribe</button>
+          <div id="subCount" class="meta" style="margin-top:8px"></div>
+        </div>
+
+        <div class="card contact-card">
+          <h3>Contact</h3>
+          <!-- Formspree placeholder. Replace YOUR_FORM_ID with your Formspree ID -->
+          <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" target="_blank">
+            <input name="name" placeholder="Name" required>
+            <input name="email" placeholder="Email" type="email" required>
+            <textarea name="message" placeholder="Message" required></textarea>
+            <button type="submit" class="btn" style="margin-top:8px">Send</button>
+          </form>
+        </div>
+
+        <div class="card share-card">
+          <h3>Share</h3>
+          <p class="meta">Share current page:</p>
+          <button id="shareFb" class="btn secondary">Share FB</button>
+          <button id="shareTw" class="btn secondary">Tweet</button>
+        </div>
+
+        <div class="card ad-card">
+  <h3>Ad Placeholder</h3>
+  <div id="ad1">Ad slot</div>
+</div>
+
+      </aside>
+    </main>
+
+    <footer>
+      <p>© <span id="year"></span> Anil Updates — Made with ❤️</p>
+    </footer>
+  </div>
+
+  <!-- ADD/EDIT MODAL -->
+  <div id="addModal" class="modal hidden">
+    <div class="modal-card">
+      <h3 id="modalTitle">Add Post</h3>
+      <div class="form-row">
+        <input id="postTitle" placeholder="Title (e.g., RRB Notification 2025)">
+      </div>
+      <div class="form-row">
+        <select id="postCat">
+          <option value="RRB">RRB</option>
+          <option value="CHSL">CHSL</option>
+          <option value="ICET">ICET</option>
+          <option value="Model Papers">Model Papers</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <textarea id="postSummary" rows="5" placeholder="Short summary / details..."></textarea>
+      </div>
+
+      <div class="form-row">
+        <label>Optional: Image URL (Cloudinary or direct)</label>
+        <input id="postImage" placeholder="Image URL (optional)">
+        <small class="meta">Tip: Use Cloudinary unsigned upload for images — configure later.</small>
+      </div>
+
+      <div class="form-actions">
+        <button id="cancelAdd" class="btn secondary">Cancel</button>
+        <button id="savePost" class="btn">Save Post</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.jsx"></script>
+</body>
+</html>
